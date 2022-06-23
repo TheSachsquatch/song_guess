@@ -1,38 +1,85 @@
-.App {
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn{
+  @apply bg-green-500 px-3 py-2 hover:bg-green-600 rounded-full font-semibold
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+ul{
+  list-style: none;
+  transition-property: height;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  scroll-snap-stop: always;
+  max-width: 300px;
+  height: 0px;
+  @apply overflow-hidden bg-slate-200 rounded-[30px] rounded-t-none font-semibold text-center
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+ul.active{
+  height: 100px;
+  scroll-snap-stop: always;
+  @apply overflow-auto
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+li:hover {
+  @apply text-gray-500
 }
 
-.App-link {
-  color: #61dafb;
+input{
+  @apply h-0 transition-[height] ease-in-out duration-300 bg-slate-100 shadow-md
+}
+input.active{
+  @apply h-10 focus:outline-green-500 focus:border-green-500
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.playertext{
+  @apply text-white ml-5 font-semibold mt-2
+}
+
+.horizontal-slider {
+  width: 140px;
+  height: 10px;
+  margin-bottom:30px;
+}
+.example-thumb {
+  cursor:pointer;
+  @apply bg-green-500 mt-1 shadow-md rounded-full px-1 py-1 h-10 w-10 border-2 border-green-500;
+}
+
+.example-track {
+  background: #ddd;
+}
+.example-track.example-track-0 {
+  @apply bg-green-500
+}
+.horizontal-slider .example-track {
+  top: 20px;
+  height: 4px;
+}
+.horizontal-slider .example-thumb {
+  top: 12px;
+  width: 10px;
+  outline: none;
+  height: 10px;
+  line-height: 38px;
+}
+
+.logout{
+  -webkit-transition: height 0.3s ease;
+  overflow: hidden;
+  @apply h-0 !py-2 shadow-md bg-gray-800 text-gray-800;
+}
+
+.logout:hover{
+  -webkit-transition: height 0.3s ease;
+  @apply h-10 !text-black;
+}
+
+.alert{
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  @apply !bg-slate-100 text-center !font-bold !text-purple-400 shadow-xl;
 }
