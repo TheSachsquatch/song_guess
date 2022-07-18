@@ -18,9 +18,9 @@ function App() {
   const token = useSelector(state => state.player.clientToken)
   const img = useSelector(state=>state.options.img);
   const user = useSelector(state=>state.options.user);
+  const back_url = process.env.REACT_APP_URL;
   useEffect(()=>{
     async function getToken(){
-      var back_url = process.env.REACT_APP_URL;
       const response = await fetch(`${back_url}/auth/token`, {
         method: "GET",
         'credentials' : 'include'
@@ -30,7 +30,7 @@ function App() {
     }
 
     getToken();
-  }, [dispatch])
+  }, [dispatch, back_url])
 
   useEffect(()=>{
     fetch(raw)
@@ -109,7 +109,7 @@ function App() {
   const logUserOut = async (e)=>{
     e.preventDefault();
     dispatch(editClientToken(""));
-    await fetch('http://localhost:5000/auth/logout', {
+    await fetch(`${back_url}/auth/logout`, {
       method: "GET",
       'credentials' : 'include'
     });

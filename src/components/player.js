@@ -17,6 +17,8 @@ function Player({start}) {
     const paused = useSelector(state=>state.player.is_paused);
     const freeze = useSelector(state=>state.player.freeze);
     const device = useSelector(state=>state.player.device);
+    const artistSelect = useSelector(state=>state.options.artist);
+    const albumSelect = useSelector(state=>state.options.album);
     const [instanceExists, setInstanceExists] = useState(false);
     const [trackG, setTrackG] = useState("");
     const [albumG, setAlbumG] = useState("");
@@ -175,6 +177,56 @@ function Player({start}) {
     changeVolume(oldVol);
   }
 
+  const setGuess = ({e, type}) =>{
+    if(type==="artist"){
+        setArtistG(e.target.value);
+    }
+    else if(type==="album"){
+        setAlbumG(e.target.value);
+    }
+    else{
+        setTrackG(e.target.value);
+    }
+  }
+  const Info = ({type}) =>{
+    let ansL = track.artists[0].name;
+    let select = artistSelect;
+    let gsu = artistG;
+    if(type==="album"){
+        ansL = track.album.name;
+        select = albumSelect;
+        gsu = albumG;
+    }
+    else if(type==="track"){
+        ansL = track.name;
+        gsu = trackG;
+    }
+
+    if((type==="artist" && artistSelect!=="" )||(type==="album" && albumSelect!=="") ){
+        return(
+            <div className = "playertext flex mb-2 flex-row">
+                <div>
+                    {type}&nbsp;:&nbsp;{select}
+                </div>
+            </div>
+        )
+    }
+    else{
+        return (
+            <div className = "playertext flex mb-2 flex-row">
+                    <div>
+                        {type}: 
+                    </div>
+                    {guess ? <div> <GuessTemp gs = {gsu} ans = {ansL}/> </div> : 
+                        <form className = "ml-4 rounded-lg mr-4"> 
+                            <input name = {`${type}`} className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e) => {setGuess(e={e}, type={type})}} />
+                        </form>
+                    }
+            </div>
+        )
+    }
+  }
+
   useEffect(() =>{
     if(track.name !=="" && !paused  && token!==""){
         var connect_url = `https://api.spotify.com/v1/me/player/volume?device_id=${device}&volume_percent=${volume}`
@@ -225,36 +277,12 @@ function Player({start}) {
             />
         </div>
         <div>
-            <div className = "playertext flex flex-row">
-                <div>
-                    track: 
-                </div>
-                {guess ? <div> <GuessTemp gs = {trackG} ans = {track.name}/> </div> : 
-                    <form className = "ml-4 rounded-lg mr-4">
-                        <input name = "track" className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e) => {setTrackG(e.target.value)}} />
-                    </form>
-                }
-            </div>
-            <div className = "playertext flex flex-row">
-                <div>
-                    artist: 
-                </div>
-                {guess ? <div> <GuessTemp gs = {artistG} ans = {track.artists[0].name} /> </div> : 
-                    <form className = "ml-4 rounded-lg mr-4"> 
-                        <input name = "artist" className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e) => {setArtistG(e.target.value)}} />
-                    </form>
-                }
-            </div>
-            <div className = "playertext mb-2 flex flex-row">
-                <div>
-                    album: 
-                </div>
-                {guess ? <div> <GuessTemp gs = {albumG} ans = {track.album.name} /> </div> : 
-                    <form className = "ml-2 rounded-lg mr-4">
-                        <input name = "album" className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e) => {setAlbumG(e.target.value)}} />
-                    </form>
-                }
-            </div>
+            <Info type = "track" />
+
+            <Info type = "album" />
+
+            <Info type = "artist" />
+
             <div className = "grid justify-items-center mb-3">
                 <button className = {playingSong ? "btn !bg-white !text-gray-800 overflow-hidden h-100" : "btn !bg-white !text-gray-800 !h-0 hidden transition-[height] ease-in-out duration-300 overflow-hidden"} onClick = {makeGuess}>
                         submit guess
