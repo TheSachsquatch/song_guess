@@ -135,7 +135,7 @@ function Player({start}) {
   const GuessTemp = ({gs, ans}) =>{
     if(gs.toLowerCase()===ans.toLowerCase()){
         return(
-            <div className = "text-green-600 font-semibold ml-1">
+            <div className = "text-green-600 font-semibold mx-1">
                 {ans}
             </div>
         )
@@ -146,7 +146,7 @@ function Player({start}) {
                 <span className = "line-through text-red-500 ml-1">
                     {gs}&nbsp;
                 </span>
-                <span className = "text-green-600 font-semibold ml-1">
+                <span className = "text-green-600 font-semibold mx-1">
                     {ans}
                 </span>
             </div>
