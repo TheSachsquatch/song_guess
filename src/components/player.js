@@ -177,19 +177,19 @@ function Player({start}) {
     changeVolume(oldVol);
   }
 
-  function setGuess (e, type){
-    e.preventDefault();
-    if(type==="artist"){
-        setArtistG(e.target.value);
+  const Info = (type) =>{
+    function setGuess(e){
+        e.preventDefault();
+        if(type==="artist"){
+            setArtistG(e.target.value);
+        }
+        else if(type==="album"){
+            setAlbumG(e.target.value);
+        }
+        else{
+            setTrackG(e.target.value);
+        }
     }
-    else if(type==="album"){
-        setAlbumG(e.target.value);
-    }
-    else{
-        setTrackG(e.target.value);
-    }
-  }
-  const Info = ({type}) =>{
     let ansL = track.artists[0].name;
     let select = artistSelect;
     let gsu = artistG;
@@ -219,7 +219,7 @@ function Player({start}) {
                     </div>
                     {guess ? <div> <GuessTemp gs = {gsu} ans = {ansL}/> </div> : 
                         <form className = "ml-4 rounded-lg mr-4"> 
-                            <input name = {`${type}`} className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e) => {setGuess(e, type)}} />
+                            <input name = {`${type}`} className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e)=> {setGuess(e)}}/>
                         </form>
                     }
             </div>
@@ -277,11 +277,11 @@ function Player({start}) {
             />
         </div>
         <div>
-            <Info type = "track" />
+            {Info("track")}
 
-            <Info type = "album" />
+            {Info("album")}
 
-            <Info type = "artist" />
+            {Info("artist")}
 
             <div className = "grid justify-items-center mb-3">
                 <button className = {playingSong ? "btn !bg-white !text-gray-800 overflow-hidden h-100" : "btn !bg-white !text-gray-800 !h-0 hidden transition-[height] ease-in-out duration-300 overflow-hidden"} onClick = {makeGuess}>
