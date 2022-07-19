@@ -177,7 +177,8 @@ function Player({start}) {
     changeVolume(oldVol);
   }
 
-  const setGuess = ({e, type}) =>{
+  function setGuess (e, type){
+    e.preventDefault();
     if(type==="artist"){
         setArtistG(e.target.value);
     }
@@ -201,7 +202,6 @@ function Player({start}) {
         ansL = track.name;
         gsu = trackG;
     }
-
     if((type==="artist" && artistSelect!=="" )||(type==="album" && albumSelect!=="") ){
         return(
             <div className = "playertext flex mb-2 flex-row">
@@ -219,7 +219,7 @@ function Player({start}) {
                     </div>
                     {guess ? <div> <GuessTemp gs = {gsu} ans = {ansL}/> </div> : 
                         <form className = "ml-4 rounded-lg mr-4"> 
-                            <input name = {`${type}`} className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e) => {setGuess(e={e}, type={type})}} />
+                            <input name = {`${type}`} className = {playingSong ? "pl-2 active rounded-md text-black" : "rounded-md text-black" } onChange= {(e) => {setGuess(e, type)}} />
                         </form>
                     }
             </div>
